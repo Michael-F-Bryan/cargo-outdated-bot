@@ -1,1 +1,1 @@
-initSidebarItems({});
+initSidebarItems({"fn":[["check_if_outdated",""]],"struct":[["Crate",""]]});

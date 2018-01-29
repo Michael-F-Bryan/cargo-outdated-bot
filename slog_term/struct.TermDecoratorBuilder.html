@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `TermDecoratorBuilder` struct in crate `slog_term`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, TermDecoratorBuilder">
+
+    <title>slog_term::TermDecoratorBuilder - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct TermDecoratorBuilder</p><div class="block items"><a class="sidebar-title" href="#methods">Methods</a><div class="sidebar-links"><a href="#method.stderr">stderr</a><a href="#method.stdout">stdout</a><a href="#method.force_color">force_color</a><a href="#method.force_plain">force_plain</a><a href="#method.try_build">try_build</a><a href="#method.build">build</a></div></div><p class='location'><a href='index.html'>slog_term</a></p><script>window.sidebarCurrent = {name: 'TermDecoratorBuilder', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>slog_term</a>::<wbr><a class="struct" href=''>TermDecoratorBuilder</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/slog_term/lib.rs.html#1184-1187' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct TermDecoratorBuilder { /* fields omitted */ }</pre><div class='docblock'><p><code>TermDecorator</code> builder</p>
+</div>
+                    <h2 id='methods' class='small-section-header'>
+                      Methods<a href='#methods' class='anchor'></a>
+                    </h2>
+                <h3 id='impl' class='impl'><span class='in-band'><code>impl <a class="struct" href="../slog_term/struct.TermDecoratorBuilder.html" title="struct slog_term::TermDecoratorBuilder">TermDecoratorBuilder</a></code><a href='#impl' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/slog_term/lib.rs.html#1189-1264' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.stderr' class="method"><span id='stderr.v' class='invisible'><code>pub fn <a href='#method.stderr' class='fnname'>stderr</a>(self) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/slog_term/lib.rs.html#1198-1201' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Output to <code>stderr</code></p>
+</div><h4 id='method.stdout' class="method"><span id='stdout.v' class='invisible'><code>pub fn <a href='#method.stdout' class='fnname'>stdout</a>(self) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/slog_term/lib.rs.html#1204-1207' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Output to <code>stdout</code></p>
+</div><h4 id='method.force_color' class="method"><span id='force_color.v' class='invisible'><code>pub fn <a href='#method.force_color' class='fnname'>force_color</a>(self) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/slog_term/lib.rs.html#1210-1213' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Force colored output</p>
+</div><h4 id='method.force_plain' class="method"><span id='force_plain.v' class='invisible'><code>pub fn <a href='#method.force_plain' class='fnname'>force_plain</a>(self) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/slog_term/lib.rs.html#1216-1219' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Force colored output</p>
+</div><h4 id='method.try_build' class="method"><span id='try_build.v' class='invisible'><code>pub fn <a href='#method.try_build' class='fnname'>try_build</a>(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../slog_term/struct.TermDecorator.html" title="struct slog_term::TermDecorator">TermDecorator</a>&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/slog_term/lib.rs.html#1226-1240' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Try to build <code>TermDecorator</code></p>
+
+<p>Unlike <code>build</code> this will not fall-back to raw <code>stdout</code>/<code>stderr</code>
+if it wasn&#39;t able to use terminal and its features directly
+(eg. if <code>TERM</code> env. was not set).</p>
+</div><h4 id='method.build' class="method"><span id='build.v' class='invisible'><code>pub fn <a href='#method.build' class='fnname'>build</a>(self) -&gt; <a class="struct" href="../slog_term/struct.TermDecorator.html" title="struct slog_term::TermDecorator">TermDecorator</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/slog_term/lib.rs.html#1246-1263' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Build <code>TermDecorator</code></p>
+
+<p>Unlike <code>try_build</code> this it will fall-back to using plain <code>stdout</code>/<code>stderr</code>
+if it wasn&#39;t able to use terminal directly.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "slog_term";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AsyncError","Errors reported by `Async`"]],"struct":[["Async","Async drain"],["AsyncBuilder","`Async` builder"],["AsyncCore","Core of `Async` drain"],["AsyncCoreBuilder","`AsyncCore` builder"],["AsyncGuard","Async guard"]],"type":[["AsyncResult","`AsyncResult` alias"]]});
