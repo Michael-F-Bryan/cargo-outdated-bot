@@ -4,3 +4,5 @@ version = "0.1.0"
 authors = ["Michael Bryan <michaelfbryan@gmail.com>"]
 
 [dependencies]
+bitflags = "0.1"
+libc = "0.1"

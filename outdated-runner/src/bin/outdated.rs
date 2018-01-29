@@ -1,4 +1,5 @@
 extern crate failure;
+extern crate itertools;
 extern crate outdated_runner;
 #[macro_use]
 extern crate slog;
@@ -16,6 +17,7 @@ use structopt::StructOpt;
 use slog::{Drain, Logger};
 use failure::{Error, ResultExt};
 use outdated_runner::Crate;
+use itertools::Itertools;
 
 fn run(args: &Args, logger: Logger) -> Result<(), Error> {
     let crate_dir = match args.crate_dir.clone() {
@@ -25,7 +27,11 @@ fn run(args: &Args, logger: Logger) -> Result<(), Error> {
 
     let krate = Crate::from_dir(crate_dir);
 
-    let results = outdated_runner::check_if_outdated(&krate, logger)?;
+    let results = outdated_runner::check_if_outdated(&krate, logger.clone())?;
+    info!(logger, "Finished running cargo-outdated"; 
+          "num-outdated" => results.len(),
+          "outdated" => results.keys().join(",")
+    );
 
     Ok(())
 }
