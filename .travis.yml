@@ -12,6 +12,7 @@ script:
 
 before_deploy:
   - cargo doc --all
+  - echo '<meta http-equiv=refresh content=0;url=outdated_runner/index.html>' > target/doc/index.html
 
 deploy:
   provider: pages
