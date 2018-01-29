@@ -1,2 +1,2 @@
 [workspace]
-members = ["outdated-runner"]
+members = ["outdated-runner", "outdated-runner/tests/dummy"]

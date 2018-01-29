@@ -3,4 +3,26 @@ name = "outdated-runner"
 version = "0.1.0"
 authors = ["Michael Bryan <michaelfbryan@gmail.com>"]
 
+[[bin]]
+name = "outdated-runner"
+path = "src/bin/outdated-runner.rs"
+doc = false
+
+[[bin]]
+name = "outdated"
+path = "src/bin/outdated.rs"
+doc = false
+
 [dependencies]
+dotenv = "0.10.1"
+structopt = "0.1.7"
+structopt-derive = "0.1.6"
+slog = "2.1.1"
+slog-json = "2.2.0"
+serde = "1.0.27"
+serde_derive = "1.0.27"
+uuid = { version = "0.5.1", features = ["v4", "serde"] }
+failure = "0.1.1"
+failure_derive = "0.1.1"
+slog-async = "2.2.0"
+slog-term = "2.3.0"
