@@ -1,5 +1,9 @@
 # Cargo Outdated Bot
 
+[![Build Status](https://travis-ci.org/Michael-F-Bryan/cargo-outdated-bot.svg?branch=master)](https://travis-ci.org/Michael-F-Bryan/cargo-outdated-bot)
+
+[**(Rendered Documentation)**](https://michael-f-bryan.github.io/cargo-outdated-bot)
+
 A bot for automatically checking every crate on [crates.io] and making sure 
 their dependencies are up to date.
 
