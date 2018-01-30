@@ -1,15 +1,20 @@
 extern crate failure;
 #[macro_use]
+extern crate failure_derive;
+#[macro_use]
 extern crate slog;
 extern crate slog_json;
 extern crate structopt;
+
+pub mod errors;
 
 use std::collections::HashMap;
 use std::ops::{Deref, DerefMut};
 use std::process::Command;
 use std::path::PathBuf;
-use failure::{Error, ResultExt};
+use failure::Error;
 use slog::{Logger, Record, Serializer, KV};
+use errors::FailedInvocation;
 
 pub fn check_if_outdated(krate: &Crate, logger: Logger) -> Result<UpgradeSet, Error> {
     let logger = logger.new(o!("crate" => krate.name.clone()));
@@ -25,19 +30,23 @@ pub fn check_if_outdated(krate: &Crate, logger: Logger) -> Result<UpgradeSet, Er
         Ok(out) => out,
         Err(e) => {
             error!(logger, "Invoking cargo-outdated failed"; "error" => e.to_string());
-            return Err(e)
-                .context("Invoking cargo-outdated failed")
-                .map_err(Error::from);
+            return Err(FailedInvocation::new("cargo-outdate", e).into());
         }
     };
 
     debug!(logger, "Command finished"; "return-code" => output.status.code().unwrap_or(0));
 
-    if output.status.code() == Some(101) {
+    if output.status.success() {
+        Ok(UpgradeSet::empty())
+    } else if output.status.code() == Some(101) {
         let output = String::from_utf8(output.stdout)?;
         parse_cargo_outdated_output(&output, logger)
     } else {
-        Ok(UpgradeSet::empty())
+        error!(logger, "Call to cargo-outdated failed"; 
+            "stdout" => String::from_utf8_lossy(&output.stdout).to_string(),
+            "stderr" => String::from_utf8_lossy(&output.stderr).to_string(),
+            );
+        Err(failure::err_msg("Unknown Return Code"))
     }
 }
 
@@ -48,7 +57,6 @@ fn parse_cargo_outdated_output(src: &str, logger: Logger) -> Result<UpgradeSet, 
         trace!(logger, "Parsing line"; "line" => line, "line-number" => i);
 
         let columns: Vec<_> = line.split_whitespace().collect();
-        println!("{:?}", columns);
         if columns.len() != 6 {
             continue;
         }
@@ -105,7 +113,7 @@ pub struct Upgrade {
 }
 
 impl KV for Upgrade {
-    fn serialize(&self, record: &Record, serializer: &mut Serializer) -> slog::Result {
+    fn serialize(&self, _record: &Record, serializer: &mut Serializer) -> slog::Result {
         serializer.emit_str("name".into(), &self.name)?;
         serializer.emit_str("from".into(), &self.from)?;
         serializer.emit_str("to".into(), &self.to)?;
