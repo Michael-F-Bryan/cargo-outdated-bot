@@ -5,8 +5,11 @@ cache:
 
 before_script: 
   - set +e
+  - command -v cargo-outdated >/dev/null 2>&1 || cargo install cargo-outdated 
+  - export PATH="$PATH:$HOME/.cargo/bin"
 
 script:
+  - cargo outdated --version
   - cargo build --all
   - cargo test --all
 

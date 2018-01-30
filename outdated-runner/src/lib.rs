@@ -23,7 +23,7 @@ pub fn check_if_outdated(krate: &Crate, logger: Logger) -> Result<UpgradeSet, Er
         .arg("outdated")
         .arg("--root-deps-only")
         .arg("--exit-code")
-        .arg("101")
+        .arg("42")
         .current_dir(&krate.dir)
         .output()
     {
@@ -38,7 +38,7 @@ pub fn check_if_outdated(krate: &Crate, logger: Logger) -> Result<UpgradeSet, Er
 
     if output.status.success() {
         Ok(UpgradeSet::empty())
-    } else if output.status.code() == Some(101) {
+    } else if output.status.code() == Some(42) {
         let output = String::from_utf8(output.stdout)?;
         parse_cargo_outdated_output(&output, logger)
     } else {
