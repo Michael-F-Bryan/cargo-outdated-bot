@@ -21,12 +21,21 @@ impl FailedInvocation {
 }
 
 #[derive(Debug, Fail)]
-pub struct FailedCommand {
+pub struct CommandFailed {
     name: String,
     output: Output,
 }
 
-impl Display for FailedCommand {
+impl CommandFailed {
+    pub fn new<S: Into<String>>(name: S, output: Output) -> CommandFailed {
+        CommandFailed {
+            name: name.into(),
+            output: output,
+        }
+    }
+}
+
+impl Display for CommandFailed {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(f, "The call to \"{}\" failed", self.name)?;
         if let Some(code) = self.output.status.code() {
