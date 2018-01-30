@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["FailedCommand",""],["FailedInvocation","Unable to invoke a command."]]});
+initSidebarItems({"struct":[["CommandFailed",""],["FailedInvocation","Unable to invoke a command."]]});
