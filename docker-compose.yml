@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  master:
+    build: master-node
+    environment:
+      CRATES_INDEX: /crates
+    volumes:
+    - crates_index:/crates
+    links:
+    - postgres
+
+  runner:
+    build: outdated-runner
+    links:
+    - master
+
+  postgres:
+    image: postgres
+    volumes:
+    - pg_data:/var/lib/postgres/data
+
+volumes:
+  pg_data: {}
+  crates_index: {}

@@ -1,2 +1,5 @@
 [workspace]
-members = ["outdated-runner", "outdated-runner/tests/dummy"]
+members = ["outdated-runner", "outdated-runner/tests/dummy", "master-node"]
+
+[patch.crates-io]
+crates-index = { git = "https://github.com/Michael-F-Bryan/rust-crates-index.git", branch = "master"}
