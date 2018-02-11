@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `AsExpression` trait in crate `diesel`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, AsExpression">
+
+    <title>diesel::expression::AsExpression - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc trait">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Trait AsExpression</p><div class="block items"><a class="sidebar-title" href="#associated-types">Associated Types</a><div class="sidebar-links"><a href="#associatedtype.Expression">Expression</a></div><a class="sidebar-title" href="#required-methods">Required Methods</a><div class="sidebar-links"><a href="#tymethod.as_expression">as_expression</a></div><a class="sidebar-title" href="#foreign-impls">Implementations on Foreign Types</a><div class="sidebar-links"><a href="#impl-AsExpression%3CNullable%3CST%3E%3E">Option&lt;T&gt;</a><a href="#impl-AsExpression%3CNullable%3CST%3E%3E">&amp;&#39;a Option&lt;T&gt;</a><a href="#impl-AsExpression%3CST%3E">Cow&lt;&#39;a, T&gt;</a><a href="#impl-AsExpression%3CST%3E">&amp;&#39;b Cow&lt;&#39;a, T&gt;</a></div><a class="sidebar-title" href="#implementors">Implementors</a></div><p class='location'><a href='../index.html'>diesel</a>::<wbr><a href='index.html'>expression</a></p><script>window.sidebarCurrent = {name: 'AsExpression', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Trait <a href='../index.html'>diesel</a>::<wbr><a href='index.html'>expression</a>::<wbr><a class="trait" href=''>AsExpression</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/diesel/expression/mod.rs.html#132-138' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait AsExpression&lt;T&gt; {
+    type <a href='#associatedtype.Expression' class="type">Expression</a>: <a class="trait" href="../../diesel/expression/trait.Expression.html" title="trait diesel::expression::Expression">Expression</a>&lt;SqlType = T&gt;;
+    fn <a href='#tymethod.as_expression' class='fnname'>as_expression</a>(self) -&gt; Self::<a class="type" href="../../diesel/expression/trait.AsExpression.html#associatedtype.Expression" title="type diesel::expression::AsExpression::Expression">Expression</a>;
+}</pre><div class='docblock'><p>Converts a type to its representation for use in Diesel&#39;s query builder.</p>
+
+<p>This trait is used directly. Apps should typically use <a href="trait.IntoSql.html"><code>IntoSql</code></a> instead.</p>
+
+<p>Implementations of this trait will generally do one of 3 things:</p>
+
+<ul>
+<li>Return <code>self</code> for types which are already parts of Diesel&#39;s query builder</li>
+<li>Perform some implicit coercion (for example, allowing <a href="../dsl/struct.now.html"><code>now</code></a> to be used as
+both <a href="../sql_types/struct.Timestamp.html"><code>Timestamp</code></a> and <a href="../pg/types/sql_types/struct.Timestamptz.html"><code>Timestamptz</code></a>.</li>
+<li>Indicate that the type has data which will be sent separately from the
+query. This is generally referred as a &quot;bind parameter&quot;. Types which
+implement <a href="../serialize/trait.ToSql.html"><code>ToSql</code></a> will generally implement <code>AsExpression</code> this way.</li>
+</ul>
+
+<h2 id='deriving' class='section-header'><a href='#deriving'>Deriving</a></h2>
+<p>This trait can be automatically derived for any type which implements <code>ToSql</code>.
+The type must be annotated with <code>#[sql_type = &quot;SomeType&quot;]</code>.
+If that annotation appears multiple times,
+implementations will be generated for each one of them.</p>
+
+<p>This will generate the following impls:</p>
+
+<ul>
+<li><code>impl AsExpression&lt;SqlType&gt; for YourType</code></li>
+<li><code>impl AsExpression&lt;Nullable&lt;SqlType&gt;&gt; for YourType</code></li>
+<li><code>impl AsExpression&lt;SqlType&gt; for &amp;&#39;a YourType</code></li>
+<li><code>impl AsExpression&lt;Nullable&lt;SqlType&gt;&gt; for &amp;&#39;a YourType</code></li>
+<li><code>impl AsExpression&lt;SqlType&gt; for &amp;&#39;a &amp;&#39;b YourType</code></li>
+<li><code>impl AsExpression&lt;Nullable&lt;SqlType&gt;&gt; for &amp;&#39;a &amp;&#39;b YourType</code></li>
+</ul>
+
+<p>If your type is unsized,
+you can specify this by adding the annotation <code>#[diesel(not_sized)]</code>.
+This will skip the impls for non-reference types.</p>
+</div>
+            <h2 id='associated-types' class='small-section-header'>
+              Associated Types<a href='#associated-types' class='anchor'></a>
+            </h2>
+            <div class='methods'>
+        <h3 id='associatedtype.Expression' class='method'><span id='Expression.t' class='invisible'><code>type <a href='#associatedtype.Expression' class="type">Expression</a>: <a class="trait" href="../../diesel/expression/trait.Expression.html" title="trait diesel::expression::Expression">Expression</a>&lt;SqlType = T&gt;</code></span></h3><div class='docblock'><p>The expression being returned</p>
+</div></div>
+            <h2 id='required-methods' class='small-section-header'>
+              Required Methods<a href='#required-methods' class='anchor'></a>
+            </h2>
+            <div class='methods'>
+        <h3 id='tymethod.as_expression' class='method'><span id='as_expression.v' class='invisible'><code>fn <a href='#tymethod.as_expression' class='fnname'>as_expression</a>(self) -&gt; Self::<a class="type" href="../../diesel/expression/trait.AsExpression.html#associatedtype.Expression" title="type diesel::expression::AsExpression::Expression">Expression</a></code></span></h3><div class='docblock'><p>Perform the conversion</p>
+</div></div>
+                <h2 id='foreign-impls' class='small-section-header'>
+                  Implementations on Foreign Types<a href='#foreign-impls' class='anchor'></a>
+                </h2>
+            <h3 id='impl-AsExpression%3CNullable%3CST%3E%3E' class='impl'><span class='in-band'><code>impl&lt;T, ST&gt; <a class="trait" href="../../diesel/expression/trait.AsExpression.html" title="trait diesel::expression::AsExpression">AsExpression</a>&lt;<a class="struct" href="../../diesel/sql_types/struct.Nullable.html" title="struct diesel::sql_types::Nullable">Nullable</a>&lt;ST&gt;&gt; for <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;ST: <a class="trait" href="../../diesel/sql_types/trait.NotNull.html" title="trait diesel::sql_types::NotNull">NotNull</a>,&nbsp;</span></code><a href='#impl-AsExpression%3CNullable%3CST%3E%3E' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/diesel/type_impls/option.rs.html#115-124' title='goto source code'>[src]</a></span></h3>
+<span class='docblock autohide'><div class='impl-items'><h4 id='associatedtype.Expression-1' class="type"><span id='Expression.t-1' class='invisible'><code>type <a href='#associatedtype.Expression' class="type">Expression</a> = Bound&lt;<a class="struct" href="../../diesel/sql_types/struct.Nullable.html" title="struct diesel::sql_types::Nullable">Nullable</a>&lt;ST&gt;, Self&gt;</code></span></h4>
+<h4 id='method.as_expression' class="method"><span id='as_expression.v-1' class='invisible'><code>fn <a href='#method.as_expression' class='fnname'>as_expression</a>(self) -&gt; Self::<a class="type" href="../../diesel/expression/trait.AsExpression.html#associatedtype.Expression" title="type diesel::expression::AsExpression::Expression">Expression</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/diesel/type_impls/option.rs.html#121-123' title='goto source code'>[src]</a></span></h4>
+</div></span><h3 id='impl-AsExpression%3CNullable%3CST%3E%3E-1' class='impl'><span class='in-band'><code>impl&lt;'a, T, ST&gt; <a class="trait" href="../../diesel/expression/trait.AsExpression.html" title="trait diesel::expression::AsExpression">AsExpression</a>&lt;<a class="struct" href="../../diesel/sql_types/struct.Nullable.html" title="struct diesel::sql_types::Nullable">Nullable</a>&lt;ST&gt;&gt; for &amp;'a <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;ST: <a class="trait" href="../../diesel/sql_types/trait.NotNull.html" title="trait diesel::sql_types::NotNull">NotNull</a>,&nbsp;</span></code><a href='#impl-AsExpression%3CNullable%3CST%3E%3E-1' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/diesel/type_impls/option.rs.html#126-135' title='goto source code'>[src]</a></span></h3>
+<span class='docblock autohide'><div class='impl-items'><h4 id='associatedtype.Expression-2' class="type"><span id='Expression.t-2' class='invisible'><code>type <a href='#associatedtype.Expression' class="type">Expression</a> = Bound&lt;<a class="struct" href="../../diesel/sql_types/struct.Nullable.html" title="struct diesel::sql_types::Nullable">Nullable</a>&lt;ST&gt;, Self&gt;</code></span></h4>
+<h4 id='method.as_expression-1' class="method"><span id='as_expression.v-2' class='invisible'><code>fn <a href='#method.as_expression' class='fnname'>as_expression</a>(self) -&gt; Self::<a class="type" href="../../diesel/expression/trait.AsExpression.html#associatedtype.Expression" title="type diesel::expression::AsExpression::Expression">Expression</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/diesel/type_impls/option.rs.html#132-134' title='goto source code'>[src]</a></span></h4>
+</div></span><h3 id='impl-AsExpression%3CST%3E' class='impl'><span class='in-band'><code>impl&lt;'a, T:&nbsp;?<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>, ST&gt; <a class="trait" href="../../diesel/expression/trait.AsExpression.html" title="trait diesel::expression::AsExpression">AsExpression</a>&lt;ST&gt; for <a class="enum" href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html" title="enum alloc::borrow::Cow">Cow</a>&lt;'a, T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: 'a + <a class="trait" href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html" title="trait alloc::borrow::ToOwned">ToOwned</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;Bound&lt;ST, <a class="enum" href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html" title="enum alloc::borrow::Cow">Cow</a>&lt;'a, T&gt;&gt;: <a class="trait" href="../../diesel/expression/trait.Expression.html" title="trait diesel::expression::Expression">Expression</a>&lt;SqlType = ST&gt;,&nbsp;</span></code><a href='#impl-AsExpression%3CST%3E' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/diesel/type_impls/primitives.rs.html#225-235' title='goto source code'>[src]</a></span></h3>
+<span class='docblock autohide'><div class='impl-items'><h4 id='associatedtype.Expression-3' class="type"><span id='Expression.t-3' class='invisible'><code>type <a href='#associatedtype.Expression' class="type">Expression</a> = Bound&lt;ST, Self&gt;</code></span></h4>
+<h4 id='method.as_expression-2' class="method"><span id='as_expression.v-3' class='invisible'><code>fn <a href='#method.as_expression' class='fnname'>as_expression</a>(self) -&gt; Self::<a class="type" href="../../diesel/expression/trait.AsExpression.html#associatedtype.Expression" title="type diesel::expression::AsExpression::Expression">Expression</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/diesel/type_impls/primitives.rs.html#232-234' title='goto source code'>[src]</a></span></h4>
+</div></span><h3 id='impl-AsExpression%3CST%3E-1' class='impl'><span class='in-band'><code>impl&lt;'a, 'b, T:&nbsp;?<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>, ST&gt; <a class="trait" href="../../diesel/expression/trait.AsExpression.html" title="trait diesel::expression::AsExpression">AsExpression</a>&lt;ST&gt; for &amp;'b <a class="enum" href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html" title="enum alloc::borrow::Cow">Cow</a>&lt;'a, T&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: 'a + <a class="trait" href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html" title="trait alloc::borrow::ToOwned">ToOwned</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;Bound&lt;ST, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;'b </a>T&gt;: <a class="trait" href="../../diesel/expression/trait.Expression.html" title="trait diesel::expression::Expression">Expression</a>&lt;SqlType = ST&gt;,&nbsp;</span></code><a href='#impl-AsExpression%3CST%3E-1' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/diesel/type_impls/primitives.rs.html#237-247' title='goto source code'>[src]</a></span></h3>
+<span class='docblock autohide'><div class='impl-items'><h4 id='associatedtype.Expression-4' class="type"><span id='Expression.t-4' class='invisible'><code>type <a href='#associatedtype.Expression' class="type">Expression</a> = Bound&lt;ST, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;'b </a>T&gt;</code></span></h4>
+<h4 id='method.as_expression-3' class="method"><span id='as_expression.v-4' class='invisible'><code>fn <a href='#method.as_expression' class='fnname'>as_expression</a>(self) -&gt; Self::<a class="type" href="../../diesel/expression/trait.AsExpression.html#associatedtype.Expression" title="type diesel::expression::AsExpression::Expression">Expression</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/diesel/type_impls/primitives.rs.html#244-246' title='goto source code'>[src]</a></span></h4>
+</div></span>
+        <h2 id='implementors' class='small-section-header'>
+          Implementors<a href='#implementors' class='anchor'></a>
+        </h2>
+        <ul class='item-list' id='implementors-list'>
+    <li><code>impl&lt;T:&nbsp;<a class="trait" href="../../diesel/expression/trait.Expression.html" title="trait diesel::expression::Expression">Expression</a>&gt; AsExpression&lt;T::<a class="type" href="../../diesel/expression/trait.Expression.html#associatedtype.SqlType" title="type diesel::expression::Expression::SqlType">SqlType</a>&gt; for T<span class="where fmt-newline">  type <a href='#associatedtype.Expression' class="type">Expression</a> = Self;</span></code></li>
+</ul><script type="text/javascript" async
+                         src="../../implementors/diesel/expression/trait.AsExpression.js">
+                 </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>↑</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>↓</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "diesel";
+    </script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

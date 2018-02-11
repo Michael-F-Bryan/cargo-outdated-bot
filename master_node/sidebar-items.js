@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Master","The object tracking the master node's state, allowing you to work directly with the underlying data."],["Settings",""]]});
