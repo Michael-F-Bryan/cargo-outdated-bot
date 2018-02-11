@@ -5,8 +5,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends cmake
 COPY . /code
 WORKDIR /code
 
-RUN cargo build --release --bin master-node && \
-    cp target/release/master-node /usr/bin/master-node && \
+RUN cargo install --bin master-node --root /usr/bin/ && \
     cargo clean && \
     rm -rf $CARGO_HOME
 

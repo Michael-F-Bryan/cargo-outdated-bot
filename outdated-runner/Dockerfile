@@ -7,8 +7,7 @@ RUN cargo install cargo-outdated --version 0.7.0
 COPY . /code
 WORKDIR /code
 
-RUN cargo build --release --bin outdated-runner && \
-    cp target/release/outdated-runner /usr/bin/outdated-runner && \
+RUN cargo install --bin outdated-runner --root /usr/bin/ && \
     cargo clean && \
     rm -rf $CARGO_HOME
 

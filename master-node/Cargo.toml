@@ -11,7 +11,7 @@ doc = false
 
 [dependencies]
 config = "0.8.0"
-crates-index = "0.10.0"
+crates-index = "0.11.0"
 diesel = "1.1.1"
 dotenv = "0.10.1"
 failure = "0.1.1"
