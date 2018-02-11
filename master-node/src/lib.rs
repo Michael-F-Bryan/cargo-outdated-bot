@@ -7,9 +7,7 @@
 //! - Handing out jobs for nodes to execute
 //! - Recording the result of each job
 
-extern crate configure;
-#[macro_use]
-extern crate configure_derive;
+extern crate config;
 extern crate crates_index;
 extern crate failure;
 #[macro_use]
@@ -17,13 +15,14 @@ extern crate failure_derive;
 extern crate serde;
 #[macro_use]
 extern crate serde_derive;
+extern crate serde_json;
 #[macro_use]
 extern crate slog;
 
-mod config;
+mod settings;
 mod master;
 
-pub use config::Config;
+pub use settings::Settings;
 pub use master::Master;
 
 use std::error::Error as StdError;

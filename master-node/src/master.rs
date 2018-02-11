@@ -2,9 +2,11 @@ use failure::Error;
 use crates_index::Index;
 use slog::Logger;
 
-use config::Config;
+use settings::Settings;
 use SyncResult;
 
+/// The object tracking the master node's state, allowing you to work directly
+/// with the underlying data.
 #[derive(Debug)]
 pub struct Master {
     index: Index,
@@ -12,17 +14,14 @@ pub struct Master {
 }
 
 impl Master {
-    pub fn new(cfg: &Config, root_logger: &Logger) -> Result<Master, Error> {
+    pub fn new(cfg: &Settings, root_logger: &Logger) -> Master {
         let index = Index::new(cfg.index_dir.clone());
         let logger = root_logger.new(o!(
             "version" => env!("CARGO_PKG_VERSION"), 
             "name" => env!("CARGO_PKG_NAME")
            ));
 
-        let m = Master { index, logger };
-        m.update()?;
-
-        Ok(m)
+        Master { index, logger }
     }
 
     pub fn update(&self) -> Result<(), Error> {
